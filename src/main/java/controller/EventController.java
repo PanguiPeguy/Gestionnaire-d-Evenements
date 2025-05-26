@@ -19,7 +19,7 @@ public class EventController {
     public void ajouterEvenement(String type, String id, String nom, LocalDateTime date, String lieu, int capaciteMax, String extra1, String extra2) throws EvenementDejaExistantException {
         Evenement evenement;
         if (type.equals("Conference")) {
-            evenement = new Conference(id, nom, date, lieu, capaciteMax, extra1, Arrays.asList(extra2.split(",")));
+            evenement = new Conference(id, nom, lieu, date, capaciteMax, extra1, Arrays.asList(extra2.split(",")));
         } else {
             evenement = new Concert(id, nom, date, lieu, capaciteMax, extra1, extra2);
         }

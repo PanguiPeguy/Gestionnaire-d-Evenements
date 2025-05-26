@@ -1,5 +1,5 @@
 package model;
 
-public interface ParticipantObserver {
+public interface ParticipantObserver{
     void update(String message);
 }

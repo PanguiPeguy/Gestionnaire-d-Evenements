@@ -1,20 +1,20 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Organisateur extends Participant {
     private List<Evenement> evenementsOrganises;
 
-    public Organisateur(String id, String nom, String email) {
+    public Organisateur(String id, String nom, String email, List<Evenement> evenementsOrganises) {
         super(id, nom, email);
-        this.evenementsOrganises = new ArrayList<>();
+        this.evenementsOrganises = evenementsOrganises;
     }
 
-    public void ajouterEvenementOrganise(Evenement e) {
-        evenementsOrganises.add(e);
-    }
 
-    // Getters
-    public List<Evenement> getEvenementsOrganises() { return evenementsOrganises; }
+    public List<Evenement> getEvenementsOrganises() {
+        return evenementsOrganises;
+    }
+    public void setEvenementsOrganises(List<Evenement> evenementsOrganises){
+        this.evenementsOrganises = evenementsOrganises;
+    }
 }
