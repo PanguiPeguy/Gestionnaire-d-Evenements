@@ -44,7 +44,6 @@ public abstract class Evenement implements EvenementObservable {
     /** La liste des observateurs recevant les notifications. */
     private List<ParticipantObserver> participantsObserver;
     /** Mapper pour la sérialisation/désérialisation JSON. */
-    private ObjectMapper objectMapper;
 
     /**
      * Constructeur par défaut.
@@ -69,8 +68,6 @@ public abstract class Evenement implements EvenementObservable {
         this.capaciteMax = capaciteMax;
         this.participants = new ArrayList<>();
         this.participantsObserver = new ArrayList<>();
-        this.objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
     }
 
     /**
@@ -141,8 +138,16 @@ public abstract class Evenement implements EvenementObservable {
      * @param fichier Le chemin du fichier de destination.
      * @throws IOException En cas d'erreur d'entrée/sortie.
      */
-    public void sauvegarderParticipants(String fichier) throws IOException {
-        objectMapper.writeValue(new File(fichier), participants);
+    public void sauvegarderParticipants(String fichier, ObjectMapper objectMapper) throws IOException {
+        if (objectMapper == null) {
+            throw new IllegalArgumentException("ObjectMapper cannot be null");
+        }
+        File file = new File(fichier);
+        File parentDir = file.getParentFile();
+        if (parentDir != null && !parentDir.exists()) {
+            parentDir.mkdirs();
+        }
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, participants);
     }
 
     /**
@@ -151,8 +156,17 @@ public abstract class Evenement implements EvenementObservable {
      * @param fichier Le chemin du fichier source.
      * @throws IOException En cas d'erreur d'entrée/sortie.
      */
-    public void chargerParticipants(String fichier) throws IOException {
-        participants = objectMapper.readValue(new File(fichier), objectMapper.getTypeFactory().constructMapType(Map.class, String.class, Evenement.class));
+    public void chargerParticipants(String fichier, ObjectMapper objectMapper) throws IOException {
+        if (objectMapper == null) {
+            throw new IllegalArgumentException("ObjectMapper cannot be null");
+        }
+        File file = new File(fichier);
+        if (file.exists() && file.length() > 0) {
+            participants = objectMapper.readValue(file,
+                    objectMapper.getTypeFactory().constructCollectionType(List.class, Participant.class));
+        } else {
+            participants = new ArrayList<>();
+        }
     }
 
     /**

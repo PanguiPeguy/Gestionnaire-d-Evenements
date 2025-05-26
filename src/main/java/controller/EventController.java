@@ -1,5 +1,6 @@
 package controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import model.*;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -18,6 +19,7 @@ public class EventController {
     private Evenement evenement;
     /** Service de notification pour l'envoi de messages asynchrones. */
     private NotificationService notificationService;
+    private ObjectMapper ObjectMapper;
 
     /**
      * Construit un nouveau contrôleur avec une instance singleton de {@link GestionEvenements}
@@ -113,5 +115,9 @@ public class EventController {
      */
     public void charger(String fichier) throws Exception {
         gestionEvenements.chargerEvenements(fichier);
+    }
+
+    public ObjectMapper getObjectMapper() {
+        return ObjectMapper;
     }
 }

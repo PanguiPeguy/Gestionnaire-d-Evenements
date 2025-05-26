@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -138,24 +140,32 @@ public class GestionEvenements {
      * @throws IOException En cas d'erreur d'entrée/sortie.
      */
     public void sauvegarderEvenements(String fichier) throws IOException {
-        Map<String, Evenement> evenementsToSave = new HashMap<>();
+        if (objectMapper == null) {
+            throw new IllegalStateException("ObjectMapper is null. Initialization failed.");
+        }
 
-        // D'abord, charger les événements existants du fichier
+        Map<String, Evenement> evenementsToSave = new HashMap<>();
         File file = new File(fichier);
+
+        // Charger les événements existants pour éviter l'écrasement
         if (file.exists() && file.length() > 0) {
             try {
                 Map<String, Evenement> existingEvenements = objectMapper.readValue(file,
                         objectMapper.getTypeFactory().constructMapType(Map.class, String.class, Evenement.class));
                 evenementsToSave.putAll(existingEvenements);
-                System.out.println("Chargement de " + existingEvenements.size() + " événements existants du fichier");
             } catch (IOException e) {
                 System.err.println("Erreur lors de la lecture du fichier JSON existant : " + e.getMessage());
-                System.err.println("Création d'un nouveau fichier...");
             }
         }
 
-        // Ensuite, ajouter/écraser avec les événements actuels
+        // Ajouter les événements actuels
         evenementsToSave.putAll(this.evenements);
+
+        // Vérifier si la map n'est pas vide avant de sauvegarder
+        if (evenementsToSave.isEmpty()) {
+            System.out.println("Aucun événement à sauvegarder, fichier non modifié.");
+            return;
+        }
 
         // Créer le répertoire parent si nécessaire
         File parentDir = file.getParentFile();
@@ -163,7 +173,7 @@ public class GestionEvenements {
             parentDir.mkdirs();
         }
 
-        // Sauvegarder la map fusionnée
+        // Sauvegarder
         objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, evenementsToSave);
         System.out.println("Sauvegarde de " + evenementsToSave.size() + " événements dans " + fichier);
     }
@@ -176,14 +186,8 @@ public class GestionEvenements {
      */
     public void chargerEvenements(String fichier) throws IOException {
         File file = new File(fichier);
-        if (!file.exists()) {
-            System.out.println("Le fichier " + fichier + " n'existe pas. Démarrage avec une collection vide.");
-            this.evenements = new HashMap<>();
-            return;
-        }
-
-        if (file.length() == 0) {
-            System.out.println("Le fichier " + fichier + " est vide. Démarrage avec une collection vide.");
+        if (!file.exists() || file.length() == 0) {
+            System.out.println("Le fichier " + fichier + " n'existe pas ou est vide. Démarrage avec une collection vide.");
             this.evenements = new HashMap<>();
             return;
         }
@@ -195,6 +199,10 @@ public class GestionEvenements {
             System.out.println("Chargement de " + this.evenements.size() + " événements depuis " + fichier);
         } catch (IOException e) {
             System.err.println("Erreur lors du chargement du fichier " + fichier + " : " + e.getMessage());
+            // Sauvegarder une copie du fichier corrompu pour débogage
+            File backupFile = new File(fichier + ".backup");
+            Files.copy(file.toPath(), backupFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            System.out.println("Fichier corrompu sauvegardé comme " + backupFile.getName());
             this.evenements = new HashMap<>();
             throw e;
         }

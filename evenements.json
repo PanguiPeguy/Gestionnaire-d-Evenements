@@ -1,3 +1,25 @@
 {
-  "@class" : "java.util.HashMap"
+  "@class" : "java.util.HashMap",
+  "1" : {
+    "@class" : "model.Conference",
+    "id" : "1",
+    "nom" : "party",
+    "lieu" : "yaounde",
+    "date" : [ 2025, 4, 10, 20, 0 ],
+    "capaciteMax" : 50,
+    "participants" : [ "java.util.ArrayList", [ {
+      "@class" : "model.Participant",
+      "id" : "1",
+      "nom" : "pangui",
+      "email" : "pangui@gmail.com"
+    } ] ],
+    "participantsObserver" : [ "java.util.ArrayList", [ {
+      "@class" : "model.Participant",
+      "id" : "1",
+      "nom" : "pangui",
+      "email" : "pangui@gmail.com"
+    } ] ],
+    "theme" : "black",
+    "intervenant" : [ "java.util.Arrays$ArrayList", [ "" ] ]
+  }
 }

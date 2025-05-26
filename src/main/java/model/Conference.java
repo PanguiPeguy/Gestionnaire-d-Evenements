@@ -36,6 +36,11 @@ public class Conference extends Evenement {
         this.intervenant = intervenant;
     }
 
+    public Conference(String id, String nom, String lieu, LocalDateTime date, int capaciteMax, String theme) {
+        super(id, nom, lieu, date, capaciteMax);
+        this.theme = theme;
+    }
+
     /**
      * Affiche les détails de la conférence, incluant le nom, le thème, la date, le lieu et les intervenants.
      *

@@ -35,6 +35,9 @@ public class Concert extends Evenement {
         this.genreMusical = genreMusical;
     }
 
+    public Concert(String id, String nom, String lieu, LocalDateTime date, int capaciteMax, String artiste, String genreMusical) {
+    }
+
     /**
      * Affiche les détails du concert, incluant le nom, l'artiste, le genre musical, la date et le lieu.
      *
