@@ -51,8 +51,6 @@ public class MainView extends Application {
         stage.setScene(scene);
         stage.show();
 
-        // Sauvegarde automatique lors de la fermeture
-        stage.setOnCloseRequest(e -> sauvegarderAutomatiquement());
     }
 
     private VBox createMainLayout() {
@@ -461,8 +459,6 @@ public class MainView extends Application {
                         extra2Value
                 );
 
-                // Sauvegarde automatique après création
-                sauvegarderAutomatiquement();
                 updateEventCards();
                 formStage.close();
                 showModernAlert(Alert.AlertType.INFORMATION, "Succès", "Événement créé avec succès!");
@@ -534,8 +530,6 @@ public class MainView extends Application {
                     Participant participant = new Participant(idField.getText(), nomField.getText(), emailField.getText());
                     controller.ajouterParticipant(eventId, participant);
 
-                    // Sauvegarde automatique après ajout
-                    sauvegarderAutomatiquement();
                     updateEventCards();
                     formStage.close();
                     showModernAlert(Alert.AlertType.INFORMATION, "Succès", "Participant ajouté avec succès!");
@@ -611,13 +605,13 @@ public class MainView extends Application {
     private void sauvegarderAutomatiquement() {
         try {
             controller.sauvegarder("evenements.json");
-            // Sauvegarder les participants pour chaque événement
             for (Evenement event : controller.getAllEvenements()) {
                 event.sauvegarderParticipants("participants_" + event.getId() + ".json", controller.getObjectMapper());
             }
             System.out.println("✅ Sauvegarde automatique effectuée");
         } catch (Exception e) {
             System.err.println("❌ Erreur lors de la sauvegarde automatique: " + e.getMessage());
+            showModernAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de la sauvegarde automatique : " + e.getMessage());
         }
     }
 

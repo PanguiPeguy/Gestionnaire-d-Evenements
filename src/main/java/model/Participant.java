@@ -1,5 +1,6 @@
 package model;
 
+
 /**
  * Représente un participant à un événement, capable de recevoir des notifications.
  * Implémente l'interface {@link ParticipantObserver}.
@@ -11,6 +12,10 @@ public class Participant implements ParticipantObserver {
     private String nom;
     /** L'adresse email du participant. */
     private String email;
+
+    public Participant(){
+
+    }
 
     /**
      * Construit un nouveau participant avec les détails spécifiés.

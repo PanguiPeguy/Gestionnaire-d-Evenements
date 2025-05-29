@@ -15,13 +15,12 @@ import java.util.Map;
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
-        property = "@type"
+        property = "@class"
 )
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = Evenement.class, name = "evenementConcret"),
-        @JsonSubTypes.Type(value = Concert.class, name = "concertConcret"),
-        @JsonSubTypes.Type(value = Conference.class, name = "conferenceConcret"),
-        @JsonSubTypes.Type(value = GestionEvenements.class, name = "GestionEvenements"),
+        @JsonSubTypes.Type(value = Concert.class, name = "model.Concert"),
+        @JsonSubTypes.Type(value = Conference.class, name = "model.Conference"),
+        @JsonSubTypes.Type(value = Participant.class, name = "model.Participant"),
 })
 
 /**
@@ -76,9 +75,14 @@ public abstract class Evenement implements EvenementObservable {
      * @param P Le participant à ajouter.
      * @throws CapaciteMaxAtteinteException Si la capacité maximale est atteinte.
      */
-    public void ajouterParticipant(Participant P) throws CapaciteMaxAtteinteException {
+    public void ajouterParticipant(Participant P) throws CapaciteMaxAtteinteException, ParticipantDejeExistantException {
         if (participants.size() >= capaciteMax) {
             throw new CapaciteMaxAtteinteException("Capacité maximale atteinte pour l'événement " + nom);
+        }
+        for (Participant i : participants) {
+            if (i.getId() == P.getId()){
+                throw new ParticipantDejeExistantException("Il existe deja un Participants avec l'ID "+ P.getId());
+            }
         }
         participants.add(P);
         notifyObservers("Nouveau participant ajouté à " + nom);

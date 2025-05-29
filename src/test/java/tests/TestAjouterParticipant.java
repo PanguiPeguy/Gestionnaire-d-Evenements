@@ -4,6 +4,7 @@ import model.Conference;
 import model.Evenement;
 import model.GestionEvenements;
 import model.Participant;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -42,5 +43,12 @@ public class TestAjouterParticipant {
         Participant p = new Participant("p1", "John", "john@example.com");
         evenement.ajouterParticipant(p);
         assertTrue(evenement.getParticipants().contains(p));
+    }
+
+    @AfterEach
+    void cleanup() {
+        if (gestion.rechercherEvenement("Conf1") != null) {
+            gestion.supprimerEvenement("Conf1");
+        }
     }
 }

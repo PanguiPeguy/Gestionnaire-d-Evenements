@@ -4,6 +4,7 @@ import model.Conference;
 import model.Evenement;
 import model.EvenementDejaExistantException;
 import model.GestionEvenements;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -40,5 +41,12 @@ public class TestAjouterEvenement {
     public void testAjouterEvenement() throws EvenementDejaExistantException {
         gestion.ajouterEvenement(evenement);
         assertEquals(evenement, gestion.rechercherEvenement("Conf1"));
+    }
+
+    @AfterEach
+    void cleanup() {
+        if (gestion.rechercherEvenement("Conf1") != null) {
+            gestion.supprimerEvenement("Conf1");
+        }
     }
 }

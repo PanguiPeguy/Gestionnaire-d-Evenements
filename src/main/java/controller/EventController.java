@@ -15,8 +15,6 @@ import java.util.stream.Collectors;
 public class EventController {
     /** Instance de gestion des événements. */
     private GestionEvenements gestionEvenements;
-    /** Événement courant (non utilisé dans les méthodes actuelles). */
-    private Evenement evenement;
     /** Service de notification pour l'envoi de messages asynchrones. */
     private NotificationService notificationService;
     private ObjectMapper ObjectMapper;
@@ -27,6 +25,9 @@ public class EventController {
      */
     public EventController() {
         this.gestionEvenements = GestionEvenements.getInstance();
+        if (gestionEvenements.getObjectMapper() == null) {
+            throw new IllegalStateException("ObjectMapper n'est pas ete initialiser dans GestionEvenements");
+        }
         this.notificationService = message -> CompletableFuture.runAsync(() -> System.out.println("Envoi asynchrone: " + message));
     }
 
@@ -60,7 +61,7 @@ public class EventController {
      * @param participant Le participant à ajouter.
      * @throws CapaciteMaxAtteinteException Si la capacité maximale de l'événement est atteinte.
      */
-    public void ajouterParticipant(String evenementId, Participant participant) throws CapaciteMaxAtteinteException {
+    public void ajouterParticipant(String evenementId, Participant participant) throws CapaciteMaxAtteinteException, ParticipantDejeExistantException {
         Evenement evenement = gestionEvenements.getEvenements().get(evenementId);
         if (evenement != null) {
             evenement.ajouterParticipant(participant);
@@ -118,6 +119,6 @@ public class EventController {
     }
 
     public ObjectMapper getObjectMapper() {
-        return ObjectMapper;
+        return gestionEvenements.getObjectMapper();
     }
 }

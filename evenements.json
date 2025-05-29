@@ -1,25 +1,72 @@
 {
   "@class" : "java.util.HashMap",
   "1" : {
-    "@class" : "model.Conference",
+    "@class" : "model.Concert",
     "id" : "1",
-    "nom" : "party",
-    "lieu" : "yaounde",
-    "date" : [ 2025, 4, 10, 20, 0 ],
-    "capaciteMax" : 50,
+    "nom" : "Club Danse Concert",
+    "lieu" : "canal olympia",
+    "date" : [ 2026, 6, 16, 15, 0 ],
+    "capaciteMax" : 1100,
     "participants" : [ "java.util.ArrayList", [ {
       "@class" : "model.Participant",
-      "id" : "1",
+      "id" : "5",
       "nom" : "pangui",
       "email" : "pangui@gmail.com"
     } ] ],
     "participantsObserver" : [ "java.util.ArrayList", [ {
       "@class" : "model.Participant",
+      "id" : "2",
+      "nom" : "aurore",
+      "email" : "aurore@gmail.com"
+    }, {
+      "@class" : "model.Participant",
+      "id" : "2",
+      "nom" : "matteo",
+      "email" : "matteo@gmail.com"
+    }, {
+      "@class" : "model.Participant",
       "id" : "1",
+      "nom" : "passo",
+      "email" : "passo@gmail.com"
+    }, {
+      "@class" : "model.Participant",
+      "id" : "5",
       "nom" : "pangui",
       "email" : "pangui@gmail.com"
     } ] ],
-    "theme" : "black",
-    "intervenant" : [ "java.util.Arrays$ArrayList", [ "" ] ]
+    "artiste" : "Danseur du Club Danse",
+    "genreMusical" : "Danse"
+  },
+  "2" : {
+    "@class" : "model.Conference",
+    "id" : "2",
+    "nom" : "Fiesta",
+    "lieu" : "canal olympia",
+    "date" : [ 2025, 5, 18, 20, 30 ],
+    "capaciteMax" : 1000,
+    "participants" : [ "java.util.ArrayList", [ {
+      "@class" : "model.Participant",
+      "id" : "10",
+      "nom" : "charlie",
+      "email" : "charlie@gmail.com"
+    } ] ],
+    "participantsObserver" : [ "java.util.ArrayList", [ {
+      "@class" : "model.Participant",
+      "id" : "1",
+      "nom" : "zouzou",
+      "email" : "zouzou@gmail.com"
+    }, {
+      "@class" : "model.Participant",
+      "id" : "1",
+      "nom" : "yampen",
+      "email" : "yampen@gmail.com"
+    }, {
+      "@class" : "model.Participant",
+      "id" : "10",
+      "nom" : "charlie",
+      "email" : "charlie@gmail.com"
+    } ] ],
+    "theme" : "Princess",
+    "intervenant" : [ "java.util.ArrayList", [ "" ] ]
   }
 }

@@ -1,6 +1,7 @@
 package tests;
 
 import model.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
@@ -46,5 +47,12 @@ public class TestSerialisation {
     @Test
     public void testDeSerialisation() throws Exception {
         gestion.chargerEvenements(fichier);
+    }
+
+    @AfterEach
+    void cleanup() {
+        if (gestion.rechercherEvenement("Conf1") != null) {
+            gestion.supprimerEvenement("Conf1");
+        }
     }
 }
